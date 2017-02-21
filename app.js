@@ -3,12 +3,16 @@ var request = require('request'); // "Request" library
 var querystring = require('querystring');
 
 var keys = require('./keys');
+require('dotenv').config();
+
 var port = process.env.PORT || 8080;
 var redirect_uri = port === 8080? 'http://192.168.1.74:8080/' : 'https://music-signature.herokuapp.com/'; //dev : prod
 var client_id = process.env.CLIENT_ID || keys.clientID;
 var client_secret = process.env.CLIENT_SECRET || keys.clientSecret;
 
 var app = express();
+
+
 
 app.set('view engine', 'ejs');
 
