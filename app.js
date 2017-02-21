@@ -5,6 +5,8 @@ var querystring = require('querystring');
 var keys = require('./keys');
 var port = process.env.PORT || 8080;
 var redirect_uri = port === 8080? 'http://192.168.1.74:8080/' : 'https://music-signature.herokuapp.com/'; //dev : prod
+var client_id = ENV['CLIENT_ID'] ? ENV['CLIENT_ID'] : keys.clientID;
+var client_secret = ENV['CLIENT_SECRET'] ? ENV['CLIENT_SECRET'] : keys.clientSecret;
 
 var app = express();
 
@@ -25,7 +27,7 @@ app.get('/', (req, res) => {
         grant_type: 'authorization_code'
       },
       headers: {
-        'Authorization': 'Basic ' + (new Buffer(keys.clientID + ':' + keys.clientSecret).toString('base64'))
+        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
       },
       json: true
     };
@@ -39,7 +41,7 @@ app.get('/', (req, res) => {
     var scope = 'user-library-read';
     res.redirect('https://accounts.spotify.com/authorize/?' +
         querystring.stringify({
-          client_id: keys.clientID,
+          client_id: client_id,
           redirect_uri: redirect_uri,
           response_type: 'code',
           scope: scope,
