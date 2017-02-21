@@ -1,0 +1,18 @@
+{
+  "author": "Max Kurapov",
+  "name": "music-signature",
+  "description": "Gets your music signature",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "cookie-parser": "1.3.2",
+    "ejs": "^2.5.5",
+    "express": "~4.0.0",
+    "querystring": "~0.2.0",
+    "request": "~2.34.0"
+  }
+}

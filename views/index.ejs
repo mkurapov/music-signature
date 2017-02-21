@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Music Signature</title>
+    <style type="text/css">
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Loading...</h1>
+    </div>
+    <script>
+      var accessToken = <%- JSON.stringify(accessToken) %>
+      let userSongs = [];
+      let totalSongs = 0;
+      let listSongIds = [];
+      let analyzedSongs = [];
+
+      const getUserLibrary = (songOffset=0) => {
+
+        let request = new Request(`https://api.spotify.com/v1/me/tracks?limit=50&offset=${songOffset}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + accessToken
+          }
+        });
+
+        fetch(request).then((response) => {return response.json()}).then((data) => {
+
+            totalSongs = data.total;
+            userSongs = userSongs.concat(data.items)
+
+            if (userSongs.length < totalSongs)
+            {
+              getUserLibrary(songOffset+=50);
+            }
+            else
+            {
+              for (let i = 0; i < totalSongs; i++)
+              {
+                  listSongIds.push(userSongs[i].track.id);
+              }
+              getAudioFeatures();
+            }
+
+        });
+
+      }
+
+      const getAudioFeatures = () => {
+
+        const songIdsToGrab = listSongIds.slice(0,50);
+
+        let request = new Request(`https://api.spotify.com/v1/audio-features?ids=${songIdsToGrab.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + accessToken
+          }
+        });
+
+        fetch(request).then((response) => {return response.json()}).then((data) => {
+          analyzedSongs = analyzedSongs.concat(data.audio_features);
+
+        if (analyzedSongs.length < totalSongs)
+        {
+          listSongIds.splice(0,50);
+          getAudioFeatures();
+        }
+        else
+        {
+          console.log(analyzedSongs);
+
+          // dataToReturn = analyzedSongs.reduce((acc, song, index) => {
+          //
+          //   acc.keys(o).reduce( (previous, key) => {
+          //
+          //     console.log();
+          //     previous.value += o[key].value;
+          //     return previous;
+          //   });
+          //
+          //   return acc;
+          // });
+
+        }
+      });
+      };
+
+
+
+
+      getUserLibrary();
+
+
+    </script>
+  </body>
+</html>
+
