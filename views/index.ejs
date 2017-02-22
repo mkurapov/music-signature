@@ -2,14 +2,15 @@
 <html>
   <head>
     <title>Music Signature</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
     <style type="text/css">
       #loader {
         animation: rotate 2s linear infinite;
         height: 50px;
-        left: 50%;
-        position: absolute;
-        top: 20%;
+        /*left: 50%;*/
+        /*position: absolute;*/
+        /*top: 20%;*/
         width: 50px;
         transition: opacity 0.3s ease-out;
       }
@@ -41,6 +42,16 @@
           stroke-dasharray: 89,200;
           stroke-dashoffset: -124;
         }
+      }
+      .container
+      {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #music-signature
+      {
+        max-height: 100%;
       }
 
     </style>
