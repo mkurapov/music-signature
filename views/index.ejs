@@ -3,14 +3,57 @@
   <head>
     <title>Music Signature</title>
     <style type="text/css">
+      #loader {
+        animation: rotate 2s linear infinite;
+        height: 50px;
+        left: 50%;
+        position: absolute;
+        top: 20%;
+        width: 50px;
+        transition: opacity 0.3s ease-out;
+      }
+      #loader.fadeOut{opacity:0}
+      .path {
+        stroke-dasharray: 1,200;
+        stroke-dashoffset: 0;
+        animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+        stroke-linecap: round;
+        stroke: #3f88f8;
+      }
+
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes dash {
+        0% {
+          stroke-dasharray: 1,200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 89,200;
+          stroke-dashoffset: -35;
+        }
+        100% {
+          stroke-dasharray: 89,200;
+          stroke-dashoffset: -124;
+        }
+      }
 
     </style>
   </head>
 
   <body>
     <div class="container">
-      <h1>Loading...</h1>
+      <div id="loader">
+        <svg id="circular" height="50" width="50">
+          <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+        </svg>
+      </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <script>
       var accessToken = <%- JSON.stringify(accessToken) %>
       let userSongs = [];
@@ -44,10 +87,10 @@
               }
               getAudioFeatures();
             }
-
         });
-
       }
+
+
 
       const getAudioFeatures = () => {
 
@@ -70,35 +113,45 @@
         }
         else
         {
-         
-          //songAnalysis contains average of all analyzedSongs properties
-          var songAnalysis = analyzedSongs.reduce((acc, song, index) => {
-
-              for (const key in acc)
-              {
-                if (typeof acc[key] === 'number')
-                {
-                  acc[key] += song[key];
-                }
-              }
-             return acc;
-           });
-
-          for (const key in songAnalysis)
-          {
-            if (typeof songAnalysis[key] === 'number')
-            {
-              songAnalysis[key] /= totalSongs
-            }
-          }
-
-          console.log(songAnalysis);
-
+          displayData()
         }
       });
       };
 
 
+
+      const displayData = () => {
+
+        //songAnalysis contains average of all analyzedSongs properties
+        var songAnalysis = analyzedSongs.reduce((acc, song, index) => {
+                for (const key in acc)
+                {
+                  if (typeof acc[key] === 'number')
+                  {
+                    acc[key] += song[key];
+                  }
+                  else
+                  {
+                    acc[key] = null;
+                  }
+                }
+          return acc;
+        });
+
+        for (const key in songAnalysis)
+        {
+          if (typeof songAnalysis[key] === 'number')
+          {
+            (key === 'duration_ms') ? null :  songAnalysis[key] /= totalSongs;
+          }
+        }
+
+        songAnalysis.duration_hours = songAnalysis.duration_ms / 3600000;
+
+        document.getElementById('loader').classList.add('fadeOut');
+        console.log(songAnalysis);
+
+      }
 
 
       getUserLibrary();
