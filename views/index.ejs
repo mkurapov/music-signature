@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Music Signature</title>
+
     <style type="text/css">
       #loader {
         animation: rotate 2s linear infinite;
@@ -52,8 +53,10 @@
           <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
         </svg>
       </div>
+      <canvas id="music-signature" width="400" height="400"></canvas>
+
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
     <script>
       var accessToken = <%- JSON.stringify(accessToken) %>
       let userSongs = [];
@@ -147,9 +150,31 @@
         }
 
         songAnalysis.duration_hours = songAnalysis.duration_ms / 3600000;
-
-        document.getElementById('loader').classList.add('fadeOut');
         console.log(songAnalysis);
+        document.getElementById('loader').classList.add('fadeOut');
+
+        var ctx = document.getElementById("music-signature");
+
+        var songData = {
+          labels: ["Acousticness", "Danceability", "Energy", "Instrumentalness", "Liveness", "Valence"],
+          datasets: [
+            {
+              label: "Song Analysis",
+              backgroundColor: "rgba(147,210,153,0.5)",
+              borderColor: "rgba(179,181,198,1)",
+              pointBackgroundColor: "rgba(179,181,198,1)",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "rgba(179,181,198,1)",
+              data: [songAnalysis.acousticness, songAnalysis.danceability, songAnalysis.energy, songAnalysis.instrumentalness, songAnalysis.liveness, songAnalysis.valence]
+            }
+          ]
+        };
+
+        var myRadarChart = new Chart(ctx, {
+          type: 'radar',
+          data: songData
+        });
 
       }
 
