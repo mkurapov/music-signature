@@ -5,15 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
     <style type="text/css">
-      body{margin:0}
+      @font-face {
+        font-family: GraphikRegular;
+        src: url('./fonts/Graphik-Regular.otf');
+      }
+      @font-face {
+        font-family: GraphikBold;
+        src: url('./fonts/Graphik-Bold.otf');
+      }
+      body
+      {
+        margin:0;
+        -webkit-font-smoothing: antialiased;
+        font-family: GraphikRegular;
+      }
+      a{text-decoration: none}
+
+      h1
+      {
+        font-size: 80px;
+        font-family: GraphikBold;
+        margin-top: 200px;
+      }
+      h2
+      {
+        font-size: 35px;
+        margin:0 0 20px 0;
+
+      }
+
+      .button
+      {
+        padding: 10px 30px;
+        transition: all 0.3s ease-in-out;
+        display: inline-block;
+        color: white;
+        font-size: 20px;
+        margin: 0 0 30px 0;
+        border: 3px solid white;
+        margin-top: 40px;
+      }
+
+      .container
+      {
+        color: white;
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        background-image: linear-gradient(-180deg, #242323 15%, #7FBE85 100%);
+      }
+
+      .footer
+      {
+      position: absolute;
+        bottom: 50px;
+      }
     </style>
   </head>
 
   <body>
 
     <div class="container">
-
-      <a href="/login">Login With Spotify</a>
+      <h1>Music Signature</h1>
+      <h2>A person’s music taste is unique as their fingerprint.</h2>
+      <h2>This project visualizes your Spotify library.</h2>
+      <a class="button" href="/login">Login</a>
+      <div class="footer">Project by <a href="http://maxs.space">Max Kurapov</a> </div>
     </div>
 
   </body>
