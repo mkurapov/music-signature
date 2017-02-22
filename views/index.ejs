@@ -51,7 +51,7 @@
 
       const getAudioFeatures = () => {
 
-        const songIdsToGrab = listSongIds.slice(0,50);
+        const songIdsToGrab = listSongIds.slice(0,100);
 
         let request = new Request(`https://api.spotify.com/v1/audio-features?ids=${songIdsToGrab.toString()}`, {
           method: 'GET',
@@ -65,24 +65,34 @@
 
         if (analyzedSongs.length < totalSongs)
         {
-          listSongIds.splice(0,50);
+          listSongIds.splice(0,100);
           getAudioFeatures();
         }
         else
         {
-          console.log(analyzedSongs);
+         
+          //songAnalysis contains average of all analyzedSongs properties
+          var songAnalysis = analyzedSongs.reduce((acc, song, index) => {
 
-          // dataToReturn = analyzedSongs.reduce((acc, song, index) => {
-          //
-          //   acc.keys(o).reduce( (previous, key) => {
-          //
-          //     console.log();
-          //     previous.value += o[key].value;
-          //     return previous;
-          //   });
-          //
-          //   return acc;
-          // });
+              for (const key in acc)
+              {
+                if (typeof acc[key] === 'number')
+                {
+                  acc[key] += song[key];
+                }
+              }
+             return acc;
+           });
+
+          for (const key in songAnalysis)
+          {
+            if (typeof songAnalysis[key] === 'number')
+            {
+              songAnalysis[key] /= totalSongs
+            }
+          }
+
+          console.log(songAnalysis);
 
         }
       });
