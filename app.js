@@ -1,60 +1,51 @@
-var express = require('express'); // Express web server framework
-var request = require('request'); // "Request" library
+var express = require('express');
+var request = require('request');
 var querystring = require('querystring');
-
-var port = process.env.PORT || 8080;
 require('dotenv').config();
 
-
-var redirect_uri = port === 8080? 'http://192.168.1.74:8080/' : 'https://music-signature.herokuapp.com/'; //dev : prod
+var port = process.env.PORT || 8080;
+var redirect_uri = port === 8080? 'http://192.168.1.74:8080/result' : 'https://music-signature.herokuapp.com/result';
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 
 var app = express();
 
-
-
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
+  res.render('index');
+});
 
-
-  const code = req.query.code;
-
-  if (code) {
-
-    let authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      form: {
-        code: code,
+app.get('/login', (req, res) => {
+  var scope = 'user-library-read';
+  res.redirect('https://accounts.spotify.com/authorize/?' +
+      querystring.stringify({
+        client_id: client_id,
         redirect_uri: redirect_uri,
-        grant_type: 'authorization_code'
-      },
-      headers: {
-        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-      },
-      json: true
-    };
+        response_type: 'code',
+        scope: scope,
+        //show_dialog: true
+      }));
+});
 
-    request.post(authOptions, (error, response, body) => {
-      res.render('index', {accessToken: body.access_token});
-    });
-  }
-  else
-  {
-    var scope = 'user-library-read';
-    res.redirect('https://accounts.spotify.com/authorize/?' +
-        querystring.stringify({
-          client_id: client_id,
-          redirect_uri: redirect_uri,
-          response_type: 'code',
-          scope: scope,
-          show_dialog: true
-        }));
-  }
+app.get('/result', (req, res) => {
 
+  let authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    form: {
+      code: req.query.code,
+      redirect_uri: redirect_uri,
+      grant_type: 'authorization_code'
+    },
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+    },
+    json: true
+  };
 
-
+  request.post(authOptions, (error, response, body) => {
+    res.render('result', {accessToken: body.access_token});
+  });
 });
 
 
