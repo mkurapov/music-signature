@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
     <style type="text/css">
+      body{margin:0}
       #loader {
-        animation: rotate 2s linear infinite;
         height: 50px;
-        /*left: 50%;*/
-        /*position: absolute;*/
-        /*top: 20%;*/
         width: 50px;
+        position: absolute;
+        margin: 0 auto;
+        animation: rotate 2s linear infinite;
         transition: opacity 0.3s ease-out;
       }
-      #loader.fadeOut{opacity:0}
+
       .path {
         stroke-dasharray: 1,200;
         stroke-dashoffset: 0;
         animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
         stroke-linecap: round;
-        stroke: #3f88f8;
+        stroke: rgba(147,210,153,1);
       }
 
       @keyframes rotate {
@@ -45,26 +45,39 @@
       }
       .container
       {
+        position: relative;
+        height: 100vh;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-direction: row;
       }
       #music-signature
       {
+        max-width: 50%;
         max-height: 100%;
+        align-self: center;
+        transition: opacity 0.3s ease-out;
       }
+
+
+      .fadeOut{opacity:0}
+      .fadeIn{opacity:1}
 
     </style>
   </head>
 
   <body>
+
     <div class="container">
       <div id="loader">
+
         <svg id="circular" height="50" width="50">
           <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
         </svg>
       </div>
-      <canvas id="music-signature" width="400" height="400"></canvas>
+      <canvas id="music-signature" class="fadeOut" width="400" height="400"></canvas>
 
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
@@ -74,6 +87,7 @@
       let totalSongs = 0;
       let listSongIds = [];
       let analyzedSongs = [];
+      let songAnalysis = {};
 
       const getUserLibrary = (songOffset=0) => {
 
@@ -127,30 +141,27 @@
         }
         else
         {
-          displayData()
+          calculateAverages()
         }
       });
       };
 
-
-
-      const displayData = () => {
-
+      const calculateAverages = () => {
         //songAnalysis contains average of all analyzedSongs properties
-        var songAnalysis = analyzedSongs.reduce((acc, song, index) => {
-                for (const key in acc)
-                {
-                  if (typeof acc[key] === 'number')
-                  {
-                    acc[key] += song[key];
-                  }
-                  else
-                  {
-                    acc[key] = null;
-                  }
-                }
-          return acc;
-        });
+        songAnalysis = analyzedSongs.reduce((acc, song, index) => {
+                  for (const key in acc)
+        {
+          if (typeof acc[key] === 'number')
+          {
+            acc[key] += song[key];
+          }
+          else
+          {
+            acc[key] = null;
+          }
+        }
+        return acc;
+      });
 
         for (const key in songAnalysis)
         {
@@ -162,9 +173,20 @@
 
         songAnalysis.duration_hours = songAnalysis.duration_ms / 3600000;
         console.log(songAnalysis);
-        document.getElementById('loader').classList.add('fadeOut');
+        displayData()
+      }
 
+
+      const displayData = () => {
         var ctx = document.getElementById("music-signature");
+
+        document.getElementById('loader').classList.add('fadeOut');
+        document.getElementById('loader').addEventListener("transitionend", (event) => {
+            ctx.classList.add('fadeIn');
+        }, false);
+
+
+
 
         var songData = {
           labels: ["Acousticness", "Danceability", "Energy", "Instrumentalness", "Liveness", "Valence"],
@@ -184,7 +206,10 @@
 
         var myRadarChart = new Chart(ctx, {
           type: 'radar',
-          data: songData
+          data: songData,
+          options: {
+//            maintainAspectRatio: false
+          }
         });
 
       }
