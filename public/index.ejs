@@ -18,12 +18,30 @@
         margin:0;
         -webkit-font-smoothing: antialiased;
         font-family: GraphikRegular;
+        overflow: hidden;
+        /*background-image: linear-gradient(-180deg, #242323 25%, #7FBE85 100%);*/
       }
+
+      .container
+      {
+
+        color: black;
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+      }
+
       a{text-decoration: none}
 
       h1
       {
-        font-size: 80px;
+        font-size: 90px;
         font-family: GraphikBold;
         margin-top: 200px;
       }
@@ -36,39 +54,122 @@
 
       .button
       {
-        padding: 10px 30px;
+        padding: 15px 40px;
         transition: all 0.3s ease-in-out;
         display: inline-block;
-        color: white;
-        font-size: 20px;
-        margin: 0 0 30px 0;
-        border: 3px solid white;
+        text-transform: uppercase;
+        color: black;
+        /*background-color: white;*/
+        font-size: 15px;
+        letter-spacing: 1px;
+        border: 4px solid black;
         margin-top: 40px;
+        border-radius: 40px;
+        font-family: GraphikBold;
       }
 
-      .container
-      {
-        color: white;
-        position: relative;
-        height: 100vh;
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-direction: column;
-        background-image: linear-gradient(-180deg, #242323 15%, #7FBE85 100%);
-      }
+
 
       .footer
       {
       position: absolute;
         bottom: 50px;
       }
+      .circle
+      {
+        position: absolute;
+        height:1000px;
+        width:1000px;
+        border-radius:50%;
+      }
+      .circle.right
+      {
+        margin:-600px -300px 0 0;
+        top:0;
+        right:0;
+        background-color:#7FBE85;
+      }
+      .circle.left
+      {
+        margin:0 0 -600px -300px;
+        top:auto;right:auto;
+        bottom:0;left:0;
+        background-color:#A47FBE;
+      }
+
+      @media screen and (max-width: 768px)
+      {
+        h1
+        {
+          font-size: 42px;
+          font-family: GraphikBold;
+          margin-top: 150px;
+        }
+        .container
+        {
+          height: 100vh;
+          width: calc(100% - 40px);
+        }
+        h2
+        {
+          font-size: 22px;
+          margin:0 0 15px 0;
+          line-height: 30px;
+
+        }
+
+        .button
+        {
+          padding: 15px 40px;
+          transition: all 0.3s ease-in-out;
+          display: inline-block;
+          text-transform: uppercase;
+          color: black;
+          /*background-color: white;*/
+          font-size: 13px;
+          letter-spacing: 1px;
+          border: 4px solid black;
+          margin-top: 20px;
+          border-radius: 40px;
+          font-family: GraphikBold;
+        }
+
+
+
+        .footer
+        {
+          position: absolute;
+          bottom: 50px;
+        }
+        .circle
+        {
+          position: absolute;
+          height:400px;
+          width:400px;
+          border-radius:50%;
+
+        }
+        .circle.right
+        {
+          margin:-200px -150px 0 0;
+          top:0;
+          right:0;
+          background-color:#7FBE85;
+        }
+        .circle.left
+        {
+          margin:0 0 -200px -150px;
+          top:auto;right:auto;
+          bottom:0;left:0;
+          background-color:#A47FBE;
+        }
+      }
     </style>
   </head>
 
   <body>
-
+    <div class="circle right"></div>
+    <div class="circle left"></div>
     <div class="container">
       <h1>Music Signature</h1>
       <h2>A person’s music taste is unique as their fingerprint.</h2>
