@@ -42,7 +42,13 @@
       {
       position: absolute;
         bottom: 50px;
+        display: flex;
+        flex-direction: column;
       }
+
+      .footer h6{font-size: 18px;margin:0;line-height: 30px;}
+      .footer h6 a{text-decoration: underline;color: black;}
+
 
 
       @media screen and (max-width: 768px)
@@ -66,11 +72,12 @@
 
         .footer
         {
-          position: absolute;
           bottom: 100px;
           margin: 0 auto;
           left:0;right:0;
         }
+        .footer h6{font-size: 15px;line-height: 30px;}
+
 
       }
     </style>
@@ -87,7 +94,10 @@
       <h2>This project analyzes & visualizes your Spotify library.</h2>
       <a class="button" href="/login">Login</a>
       </div>
-        <div class="footer">Project by <a href="http://maxs.space">Max Kurapov</a> </div>
+        <div class="footer">
+          <h6>Project by <a href="http://maxs.space">Max Kurapov</a> </h6>
+          <h6><a href="https://github.com/mkurapov/music-signature">Github Repo</a> </h6>
+          </div>
     </div>
 
   </body>

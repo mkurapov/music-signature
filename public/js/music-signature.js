@@ -84,7 +84,7 @@ const generateSignature = (accessToken) => {
     }
 
     songAnalysis.duration_hours = songAnalysis.duration_ms / 3600000;
-    displaySongAnalysis()
+    createGraph()
     getUserStats();
 
   }
@@ -138,21 +138,18 @@ const generateSignature = (accessToken) => {
     }).then((data) => {
       userAnalysis.topTrack.name = data.items[0].name;
       userAnalysis.topTrack.artist = data.items[0].artists[0].name;
-      displayUser();
+      displayStats();
     });
   }
 
 
   //displaying user and song analysis
-  const displaySongAnalysis = () => {
+  const createGraph = () => {
 
     console.log(songAnalysis);
     var ctx = document.getElementById("music-signature");
 
-    document.getElementById('loader').classList.add('fadeOut');
-    document.getElementById('loader').addEventListener("transitionend", (event) => {
-      ctx.classList.add('fadeIn');
-    }, false);
+
 
 
     var songData = {
@@ -160,7 +157,7 @@ const generateSignature = (accessToken) => {
       datasets: [
         {
           label: "Song Analysis",
-          backgroundColor: "rgba(147,210,153,0.5)",
+          backgroundColor: "rgba(147,210,153,0.7)",
           borderColor: "rgba(179,181,198,1)",
           pointBackgroundColor: "rgba(179,181,198,1)",
           pointBorderColor: "#fff",
@@ -175,15 +172,33 @@ const generateSignature = (accessToken) => {
       type: 'radar',
       data: songData,
       options: {
-        //            maintainAspectRatio: false
-      }
+          legend: {
+            labels:{
+                fontSize:20,
+                fontFamily:'GraphikRegular',
+                fontColor:'black',
+            }
+          },
+        scales:{
+          // bodyFontSize:40,
+          scaleLabel  :{
+            fontSize:40,
+          }
+        }
+
+
+
+      },
     });
+   // myRadarChart.defaults.global.defaultFontSize = 20
+
+    console.log(myRadarChart);
 
   }
 
 
 
-  const displayUser = () => {
+  const displayStats = () => {
 
       console.log(userAnalysis);
 
@@ -211,8 +226,14 @@ const generateSignature = (accessToken) => {
 
     
     
-      let infoWrap = document.getElementsByClassName('info-wrap');
-      for (let i = 0; i < infoWrap.length; i++) { infoWrap[i].classList.add('fadeIn');}
+
+
+      document.getElementById('loader').classList.add('fadeOut');
+      document.getElementById('loader').addEventListener("transitionend", (event) => {
+        document.getElementById('music-signature').classList.add('fadeIn');
+        let infoWrap = document.getElementsByClassName('info-wrap');
+        for (let i = 0; i < infoWrap.length; i++) { infoWrap[i].classList.add('fadeIn');}
+      }, false);
   }
 
 
