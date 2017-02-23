@@ -4,7 +4,7 @@ const generateSignature = (accessToken) => {
   let listSongIds = [];
   let analyzedSongs = [];
   let songAnalysis = {};
-  let userAnalysis = {};
+  let userAnalysis = {name:'', topTrack:{}};
 
   const getUserLibrary = (songOffset = 0) => {
 
@@ -108,7 +108,7 @@ const generateSignature = (accessToken) => {
   }
 
   const getUserTopArtist = () => {
-    let topArtistUrl = `https://api.spotify.com/v1/me/top/artists`;
+    let topArtistUrl = `https://api.spotify.com/v1/me/top/artists?limit=1&time_range=long_term`;
     let options = {
       method: 'GET',
       headers: {
@@ -120,6 +120,24 @@ const generateSignature = (accessToken) => {
       return response.json()
     }).then((data) => {
       userAnalysis.topArtist = data.items[0].name;
+      getUserTopTrack();
+    });
+  }
+
+  const getUserTopTrack = () => {
+    let topArtistUrl = `https://api.spotify.com/v1/me/top/tracks?limit=1&time_range=long_term`;
+    let options = {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    };
+
+    fetch(topArtistUrl, options).then((response) => {
+      return response.json()
+    }).then((data) => {
+      userAnalysis.topTrack.name = data.items[0].name;
+      userAnalysis.topTrack.artist = data.items[0].artists[0].name;
       displayUser();
     });
   }
@@ -167,13 +185,34 @@ const generateSignature = (accessToken) => {
 
   const displayUser = () => {
 
-    console.log(userAnalysis);
+      console.log(userAnalysis);
+
       document.getElementsByClassName('name')[0].innerText = `Hey${userAnalysis.name ? ' '+userAnalysis.name : null},`;
       document.getElementsByClassName('info')[0].innerText = `Here are your Spotify stats:`;
       document.getElementsByClassName('info')[1].innerHTML = `You have <span>${userAnalysis.totalSongs}</span> songs in your library, with a total length of <span>${songAnalysis.duration_hours.toFixed(1)}</span> hours.`;
-      (userAnalysis.topArtist) ? document.getElementsByClassName('info')[2].innerHTML = `Your most popular artist is <span>${userAnalysis.topArtist}</span>.` : null;
+      // userAnalysis.topArtist = undefined;
+      if (userAnalysis.topTrack && userAnalysis.topArtist)
+      {
+        if (userAnalysis.topArtist === userAnalysis.topTrack.artist)
+        {
+          document.getElementsByClassName('info')[2].innerHTML = `Your top artist is <span class="purple">${userAnalysis.topArtist}</span>, and your favourite song by them is <span class="green">${userAnalysis.topTrack.name}</span>.`;
+        }
+        else
+        {
+          document.getElementsByClassName('info')[2].innerHTML = `Your top artist is <span class="purple">${userAnalysis.topArtist}</span>, and your favourite song is <span class="green">${userAnalysis.topTrack.name}</span> by <span class="orange">${userAnalysis.topTrack.artist}</span>.`;
+        }
+      }
 
 
+      document.getElementsByClassName('info')[3].innerHTML = `The average song in your library has <span>${Math.round(songAnalysis.tempo)}</span> beats per minute.`;
+
+      let happierMusic = songAnalysis.valence > 0.45 ? true : false;
+      document.getElementsByClassName('info')[4].innerHTML = `You generally listen to <span class="${happierMusic ? 'orange' : 'blue'}">${happierMusic ?'happier' : 'sadder'}</span> music.`;
+
+    
+    
+      let infoWrap = document.getElementsByClassName('info-wrap');
+      for (let i = 0; i < infoWrap.length; i++) { infoWrap[i].classList.add('fadeIn');}
   }
 
 

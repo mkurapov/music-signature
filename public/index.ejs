@@ -7,9 +7,9 @@
     <style type="text/css">
       .container
       {
-
         color: black;
-        position: relative;
+        position: fixed;
+        text-align: center;
         height: 100vh;
         width: 100%;
         margin: 0 auto;
@@ -17,7 +17,6 @@
         justify-content: flex-start;
         align-items: center;
         flex-direction: column;
-        text-align: center;
         overflow: hidden;
       }
 
@@ -33,24 +32,9 @@
       {
         font-size: 35px;
         margin:0 0 20px 0;
-
       }
 
-      .button
-      {
-        padding: 15px 40px;
-        transition: all 0.3s ease-in-out;
-        display: inline-block;
-        text-transform: uppercase;
-        color: black;
-        /*background-color: white;*/
-        font-size: 15px;
-        letter-spacing: 1px;
-        border: 4px solid black;
-        margin-top: 40px;
-        border-radius: 40px;
-        font-family: GraphikBold;
-      }
+
 
 
 
@@ -59,28 +43,7 @@
       position: absolute;
         bottom: 50px;
       }
-      .circle
-      {
-        position: absolute;
-        height:1000px;
-        width:1000px;
-        border-radius:50%;
-        z-index: -1;
-      }
-      .circle.right
-      {
-        margin:-600px -300px 0 0;
-        top:0;
-        right:0;
-        background-color:#7FBE85;
-      }
-      .circle.left
-      {
-        margin:0 0 -600px -300px;
-        top:auto;right:auto;
-        bottom:0;left:0;
-        background-color:#A47FBE;
-      }
+
 
       @media screen and (max-width: 768px)
       {
@@ -88,15 +51,11 @@
         {
           font-size: 42px;
           font-family: GraphikBold;
-          margin-top: 150px;
+          margin-top: 60px;
         }
         .container
         {
-          height: 100vh;
-        }
-        .info
-        {
-          width: calc(100% - 40px);
+          /*height: 100vh;*/
         }
         h2
         {
@@ -105,53 +64,14 @@
           line-height: 30px;
         }
 
-
-        .button
-        {
-          padding: 15px 40px;
-          transition: all 0.3s ease-in-out;
-          display: inline-block;
-          text-transform: uppercase;
-          color: black;
-          /*background-color: white;*/
-          font-size: 13px;
-          letter-spacing: 1px;
-          border: 4px solid black;
-          margin-top: 20px;
-          border-radius: 40px;
-          font-family: GraphikBold;
-        }
-
-
-
         .footer
         {
           position: absolute;
-          bottom: 50px;
+          bottom: 100px;
+          margin: 0 auto;
+          left:0;right:0;
         }
-        .circle
-        {
-          position: absolute;
-          height:400px;
-          width:400px;
-          border-radius:50%;
 
-
-        }
-        .circle.right
-        {
-          margin:-200px -150px 0 0;
-          top:0;
-          right:0;
-          background-color:#7FBE85;
-        }
-        .circle.left
-        {
-          margin:0 0 -200px -150px;
-          top:auto;right:auto;
-          bottom:0;left:0;
-          background-color:#A47FBE;
-        }
       }
     </style>
   </head>
@@ -161,7 +81,7 @@
     <div class="container">
       <div class="circle right"></div>
       <div class="circle left"></div>
-      <div class="info">
+      <div class="info-wrap">
       <h1>Music Signature</h1>
       <h2>A person’s music taste is unique as their fingerprint.</h2>
       <h2>This project analyzes & visualizes your Spotify library.</h2>

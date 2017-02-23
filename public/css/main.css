@@ -6,6 +6,13 @@
     font-family: GraphikBold;
     src: url('../fonts/Graphik-Bold.otf');
 }
+
+:root {
+    --project-green: #7FBE85;
+    --project-purple: #A47FBE;
+    --project-orange: #E98721;
+    --project-blue: #2193E9;
+}
 body
 {
     margin:0;
@@ -14,3 +21,103 @@ body
     /*overflow: hidden;*/
     /*background-image: linear-gradient(-180deg, #242323 25%, #7FBE85 100%);*/
 }
+.button
+{
+    padding: 15px 40px;
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+    text-transform: uppercase;
+    color: black;
+    /*background-color: white;*/
+    font-size: 15px;
+    letter-spacing: 1px;
+    border: 4px solid black;
+    margin-top: 40px;
+    border-radius: 40px;
+    font-family: GraphikBold;
+}
+
+.circle
+{
+    position: fixed;
+    height:1000px;
+    width:1000px;
+    border-radius:50%;
+    z-index: -1;
+}
+.circle.right
+{
+    margin:-600px -300px 0 0;
+    top:0;
+    right:0;
+    background-color:var(--project-green);
+}
+.circle.left
+{
+    margin:0 0 -600px -300px;
+    top:auto;right:auto;
+    bottom:0;left:0;
+    background-color:var(--project-purple);
+}
+
+
+
+.fadeOut{opacity:0 !important;}
+.fadeIn{opacity:1 !important;}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 42px;
+        font-family: GraphikBold;
+        margin-top: 150px;
+    }
+
+    /*.container {*/
+        /*height: 100vh;*/
+    /*}*/
+
+    .info-wrap {
+        width: calc(100% - 40px);
+    }
+
+    h2 {
+        font-size: 22px;
+        margin: 0 0 15px 0;
+        line-height: 30px;
+    }
+
+    .button {
+        padding: 15px 40px;
+        transition: all 0.3s ease-in-out;
+        display: inline-block;
+        text-transform: uppercase;
+        color: black;
+        /*background-color: white;*/
+        font-size: 13px;
+        letter-spacing: 1px;
+        border: 4px solid black;
+        margin-top: 20px;
+        border-radius: 40px;
+        font-family: GraphikBold;
+    }
+    .circle
+    {
+        height:400px;
+        width:400px;
+    }
+    .circle.right
+    {
+        margin:-200px -150px 0 0;
+        top:0;
+        right:0;
+        background-color:var(--project-green);
+    }
+    .circle.left
+    {
+        margin:0 0 -200px -150px;
+        top:auto;right:auto;
+        bottom:0;left:0;
+        background-color:var(--project-purple);
+    }
+}
+
