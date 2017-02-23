@@ -1,10 +1,10 @@
 const generateSignature = (accessToken) => {
 
   let userSongs = [];
-  let totalSongs = 0;
   let listSongIds = [];
   let analyzedSongs = [];
   let songAnalysis = {};
+  let userAnalysis = {};
 
   const getUserLibrary = (songOffset = 0) => {
 
@@ -20,14 +20,14 @@ const generateSignature = (accessToken) => {
       return response.json()
     }).then((data) => {
 
-      totalSongs = data.total;
+      userAnalysis.totalSongs = data.total;
       userSongs = userSongs.concat(data.items)
 
-      if (userSongs.length < totalSongs) {
+      if (userSongs.length < userAnalysis.totalSongs) {
         getUserLibrary(songOffset += 50);
       }
       else {
-        for (let i = 0; i < totalSongs; i++) {
+        for (let i = 0; i < userAnalysis.totalSongs; i++) {
           listSongIds.push(userSongs[i].track.id);
         }
         getAudioFeatures();
@@ -53,7 +53,7 @@ const generateSignature = (accessToken) => {
     }).then((data) => {
       analyzedSongs = analyzedSongs.concat(data.audio_features);
 
-      if (analyzedSongs.length < totalSongs) {
+      if (analyzedSongs.length < userAnalysis.totalSongs) {
         listSongIds.splice(0, 100);
         getAudioFeatures();
       }
@@ -79,17 +79,56 @@ const generateSignature = (accessToken) => {
 
     for (const key in songAnalysis) {
       if (typeof songAnalysis[key] === 'number') {
-        (key === 'duration_ms') ? null : songAnalysis[key] /= totalSongs;
+        (key === 'duration_ms') ? null : songAnalysis[key] /= userAnalysis.totalSongs;
       }
     }
 
     songAnalysis.duration_hours = songAnalysis.duration_ms / 3600000;
-    console.log(songAnalysis);
-    displayData()
+    displaySongAnalysis()
+    getUserStats();
+
+  }
+
+  //grabbing user specific information
+  const getUserStats = () => {
+    let url = `https://api.spotify.com/v1/me`;
+    let options = {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    };
+
+    fetch(url, options).then((response) => {
+      return response.json()
+    }).then((data) => {
+      userAnalysis.name = data.display_name.substr(0, data.display_name.indexOf(' '));
+      getUserTopArtist();
+    });
+  }
+
+  const getUserTopArtist = () => {
+    let topArtistUrl = `https://api.spotify.com/v1/me/top/artists`;
+    let options = {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    };
+
+    fetch(topArtistUrl, options).then((response) => {
+      return response.json()
+    }).then((data) => {
+      userAnalysis.topArtist = data.items[0].name;
+      displayUser();
+    });
   }
 
 
-  const displayData = () => {
+  //displaying user and song analysis
+  const displaySongAnalysis = () => {
+
+    console.log(songAnalysis);
     var ctx = document.getElementById("music-signature");
 
     document.getElementById('loader').classList.add('fadeOut');
@@ -125,5 +164,20 @@ const generateSignature = (accessToken) => {
   }
 
 
+
+  const displayUser = () => {
+
+    console.log(userAnalysis);
+      document.getElementsByClassName('name')[0].innerText = `Hey${userAnalysis.name ? ' '+userAnalysis.name : null},`;
+      document.getElementsByClassName('info')[0].innerText = `Here are your Spotify stats:`;
+      document.getElementsByClassName('info')[1].innerHTML = `You have <span>${userAnalysis.totalSongs}</span> songs in your library, with a total length of <span>${songAnalysis.duration_hours.toFixed(1)}</span> hours.`;
+      (userAnalysis.topArtist) ? document.getElementsByClassName('info')[2].innerHTML = `Your most popular artist is <span>${userAnalysis.topArtist}</span>.` : null;
+
+
+  }
+
+
   getUserLibrary();
+
+
 }

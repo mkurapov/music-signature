@@ -3,9 +3,9 @@
   <head>
     <title>Music Signature</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 
     <style type="text/css">
-      body{margin:0}
       #loader {
         height: 50px;
         width: 50px;
@@ -47,12 +47,14 @@
       .container
       {
         position: relative;
-        height: 100vh;
+        /*height: 100vh;*/
+        margin: 0 auto;
         width: 100%;
+        max-width: 800px;
         display: flex;
         justify-content: center;
-        align-items: center;
-        flex-direction: row;
+        overflow: hidden;
+        flex-direction: column;
       }
       #music-signature
       {
@@ -61,6 +63,21 @@
         align-self: center;
         transition: opacity 0.3s ease-out;
       }
+
+      .name
+      {
+        font-family: GraphikBold;
+        font-size: 60px;
+      }
+      .info
+      {
+        font-size: 40px;
+        margin: 30px 0 0 0;
+        line-height: 60px;
+        /*font-family: GraphikBold;*/
+      }
+
+      .info span{font-family: GraphikBold}
 
 
       .fadeOut{opacity:0}
@@ -72,6 +89,10 @@
   <body>
 
     <div class="container">
+      <h2 class="name"></h2>
+      <h3 class="info"></h3>
+      <h3 class="info"></h3>
+      <h3 class="info"></h3>
       <div id="loader">
 
         <svg id="circular" height="50" width="50">

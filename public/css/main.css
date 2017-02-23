@@ -1,0 +1,16 @@
+@font-face {
+    font-family: GraphikRegular;
+    src: url('../fonts/Graphik-Regular.otf');
+}
+@font-face {
+    font-family: GraphikBold;
+    src: url('../fonts/Graphik-Bold.otf');
+}
+body
+{
+    margin:0;
+    -webkit-font-smoothing: antialiased;
+    font-family: GraphikRegular;
+    /*overflow: hidden;*/
+    /*background-image: linear-gradient(-180deg, #242323 25%, #7FBE85 100%);*/
+}

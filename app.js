@@ -27,7 +27,7 @@ app.get('/login', (req, res) => {
   var state = generateRandomString(16);
   res.cookie('stateKey', state);
 
-  var scope = 'user-library-read';
+  var scope = 'user-library-read user-top-read';
   res.redirect('https://accounts.spotify.com/authorize/?' +
       querystring.stringify({
         client_id: client_id,
@@ -69,7 +69,6 @@ app.get('/result', (req, res) => {
     request.post(authOptions, (error, response, body) => {
 
       const accessToken = body.access_token;
-      console.log('got access token: ' + accessToken);
       res.cookie('access_token', accessToken)
       res.render('result', {accessToken: accessToken});
     });
