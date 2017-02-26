@@ -77,13 +77,16 @@ const generateSignature = (accessToken) => {
       return acc;
     });
 
+
+
     for (const key in songAnalysis) {
       if (typeof songAnalysis[key] === 'number') {
         (key === 'duration_ms') ? null : songAnalysis[key] /= userAnalysis.totalSongs;
       }
     }
 
-    songAnalysis.duration_hours = songAnalysis.duration_ms / 3600000;
+    console.log(songAnalysis);
+
     createGraph()
     getUserStats();
 
@@ -146,7 +149,6 @@ const generateSignature = (accessToken) => {
   //displaying user and song analysis
   const createGraph = () => {
 
-    console.log(songAnalysis);
     var ctx = document.getElementById("music-signature");
 
 
@@ -190,21 +192,16 @@ const generateSignature = (accessToken) => {
 
       },
     });
-   // myRadarChart.defaults.global.defaultFontSize = 20
-
-    console.log(myRadarChart);
-
   }
 
 
 
   const displayStats = () => {
 
-      console.log(userAnalysis);
 
       document.getElementsByClassName('name')[0].innerText = `Hey${userAnalysis.name ? ' '+userAnalysis.name : null},`;
-      document.getElementsByClassName('info')[0].innerText = `Here are your Spotify stats:`;
-      document.getElementsByClassName('info')[1].innerHTML = `You have <span>${userAnalysis.totalSongs}</span> songs in your library, with a total length of <span>${songAnalysis.duration_hours.toFixed(1)}</span> hours.`;
+      document.getElementsByClassName('info')[0].innerText = `Here are some basic stats from your Spotify library:`;
+      document.getElementsByClassName('info')[1].innerHTML = `You have <span>${userAnalysis.totalSongs}</span> songs in your library, with a total length of <span>${(songAnalysis.duration_ms/3600000).toFixed(1)}</span> hours.`;
       // userAnalysis.topArtist = undefined;
       if (userAnalysis.topTrack && userAnalysis.topArtist)
       {
@@ -218,11 +215,14 @@ const generateSignature = (accessToken) => {
         }
       }
 
-
-      document.getElementsByClassName('info')[3].innerHTML = `The average song in your library has <span>${Math.round(songAnalysis.tempo)}</span> beats per minute.`;
+      let averageSongLength = songAnalysis.duration_ms / (userAnalysis.totalSongs * 60000);
+      let averageMinutes = Math.floor(averageSongLength);
+      let averageSeconds = Math.round((averageSongLength % 1) * 60);
+    
+      document.getElementsByClassName('info')[3].innerHTML = `The average song in your library has <span>${Math.round(songAnalysis.tempo)}</span> beats per minute, and is <span>${averageMinutes}:${averageSeconds} minutes </span>long.`;
 
       let happierMusic = songAnalysis.valence > 0.45 ? true : false;
-      document.getElementsByClassName('info')[4].innerHTML = `You generally listen to <span class="${happierMusic ? 'orange' : 'blue'}">${happierMusic ?'happier' : 'sadder'}</span> music.`;
+      document.getElementsByClassName('info')[5].innerHTML = `You generally listen to <span class="${happierMusic ? 'orange' : 'blue'}">${happierMusic ?'happier' : 'sadder'}</span> music.`;
 
     
     

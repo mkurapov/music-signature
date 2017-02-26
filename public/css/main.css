@@ -6,6 +6,22 @@
     font-family: GraphikBold;
     src: url('../fonts/Graphik-Bold.otf');
 }
+@font-face {
+    font-family: CircularMedium;
+    src: url('../fonts/circular-medium.otf');
+}
+@font-face {
+    font-family: CircularBook;
+    src: url('../fonts/circular-book.otf');
+}
+@font-face {
+    font-family: CircularBold;
+    src: url('../fonts/circular-bold.otf');
+}
+@font-face {
+    font-family: CircularBlack;
+    src: url('../fonts/circular-black.otf');
+}
 
 :root {
     --project-green: #7FBE85;
@@ -17,7 +33,7 @@ body
 {
     margin:0;
     -webkit-font-smoothing: antialiased;
-    font-family: GraphikRegular;
+    font-family: CircularBook;
     /*overflow: hidden;*/
     /*background-image: linear-gradient(-180deg, #242323 25%, #7FBE85 100%);*/
 }
@@ -34,7 +50,7 @@ body
     border: 4px solid black;
     margin-top: 40px;
     border-radius: 40px;
-    font-family: GraphikBold;
+    font-family: CircularBlack;
     transition: all 0.3s ease-in-out;
 }
 
@@ -108,7 +124,6 @@ body
         border: 4px solid black;
         margin-top: 20px;
         border-radius: 40px;
-        font-family: GraphikBold;
     }
     .circle
     {
