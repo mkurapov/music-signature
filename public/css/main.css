@@ -52,6 +52,8 @@ body
     border-radius: 40px;
     font-family: CircularBlack;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .button:hover
