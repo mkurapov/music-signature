@@ -105,7 +105,7 @@ const generateSignature = (accessToken) => {
     fetch(url, options).then((response) => {
       return response.json()
     }).then((data) => {
-      userAnalysis.name = data.display_name.substr(0, data.display_name.indexOf(' '));
+      userAnalysis.name = data.display_name;
       getUserTopArtist();
     });
   }
@@ -154,7 +154,8 @@ const generateSignature = (accessToken) => {
 
     imageDownload.addEventListener('click', () => {
       imageDownload.href = canvas.toDataURL('image/png');
-      imageDownload.download = 'music-signature.png';
+      const nameForDL = userAnalysis.name.replace(' ','-').toLowerCase();
+      imageDownload.download = `${nameForDL ? nameForDL+'-':''}music-signature.png`;
     });
 
 
@@ -199,8 +200,9 @@ const generateSignature = (accessToken) => {
 
   //display basic stats
   const displayStats = () => {
-    
-      document.getElementsByClassName('name')[0].innerText = `Hey${userAnalysis.name ? ' '+userAnalysis.name : null},`;
+
+      const firstName = userAnalysis.name.substr(0, userAnalysis.name.indexOf(' '));
+      document.getElementsByClassName('name')[0].innerText = `Hey${firstName ? ' '+firstName : ''},`;
 
       let infoElement = document.getElementsByClassName('info');
 
