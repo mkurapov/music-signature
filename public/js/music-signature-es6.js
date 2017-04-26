@@ -155,14 +155,24 @@ const generateSignature = (accessToken) => {
 
     
 
-    let offset = canvas.width / analyzedSongs.length;
+    const offset = canvas.width / analyzedSongs.length;
+    const cvHeight = canvas.height;
 
     for (let i = 0; i < analyzedSongs.length; i++)
     {
-      console.log(analyzedSongs[i])
+      const currentSong = analyzedSongs[i];
+      const red = Math.round(255 * currentSong.valence);
+      const green = Math.round(255 * ((1 - currentSong.valence)/2));
+      const blue = Math.round(255 * (1 - currentSong.valence));
+      const opacity = 0.3;
+      const radius = Math.round(40 * (1 - (currentSong.energy)));
+      const x = i * offset;
+      const y = cvHeight * currentSong.liveness;
+
+      console.log(currentSong)
       ctx.beginPath();
-      ctx.fillStyle = '#00F0F8FF'
-      ctx.arc(i * offset,200,7,0,2*Math.PI);
+      ctx.fillStyle = `rgba(${red},${green},${blue},${opacity})`;
+      ctx.arc(x,y,radius,0,2*Math.PI);
       ctx.fill();
     }
 
