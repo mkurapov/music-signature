@@ -85,9 +85,7 @@ const generateSignature = (accessToken) => {
       }
     }
 
-    console.log(songAnalysis);
-
-    createGraph()
+    createCanvas();
     getUserStats();
 
   }
@@ -147,53 +145,34 @@ const generateSignature = (accessToken) => {
 
 
   //displaying user and song analysis
-  const createGraph = () => {
+  const createCanvas = () => {
 
-    var canvas = document.getElementById("music-signature");
-    var imageDownload = document.getElementById("download-image");
+    const canvas = document.getElementById("music-signature");
+    console.log(canvas);
 
+    const ctx = canvas.getContext('2d');
+    
+
+    
+
+    let offset = canvas.width / analyzedSongs.length;
+
+    for (let i = 0; i < analyzedSongs.length; i++)
+    {
+      console.log(analyzedSongs[i])
+      ctx.beginPath();
+      ctx.fillStyle = '#00F0F8FF'
+      ctx.arc(i * offset,200,7,0,2*Math.PI);
+      ctx.fill();
+    }
+
+
+
+  const imageDownload = document.getElementById("download-image");
     imageDownload.addEventListener('click', function() {
       this.href = canvas.toDataURL('image/png');
       const nameForDL = userAnalysis.name.replace(' ','-').toLowerCase();
       this.download = `${nameForDL ? nameForDL+'-':''}music-signature.png`;
-    });
-
-
-
-    var songData = {
-      labels: ["Acousticness", "Danceability", "Energy", "Instrumentalness", "Liveness", "Valence"],
-      datasets: [
-        {
-          label: "Song Analysis",
-          backgroundColor: "rgba(147,210,153,0.7)",
-          borderColor: "rgba(179,181,198,1)",
-          pointBackgroundColor: "rgba(179,181,198,1)",
-          pointBorderColor: "#fff",
-          pointHoverBackgroundColor: "#fff",
-          pointHoverBorderColor: "rgba(179,181,198,1)",
-          data: [songAnalysis.acousticness, songAnalysis.danceability, songAnalysis.energy, songAnalysis.instrumentalness, songAnalysis.liveness, songAnalysis.valence]
-        }
-      ]
-    };
-
-    var myRadarChart = new Chart(canvas, {
-      type: 'radar',
-      data: songData,
-      options: {
-          legend: {
-            labels:{
-                fontSize:20,
-                fontFamily:'GraphikRegular',
-                fontColor:'black',
-            }
-          },
-        scales:{
-          // bodyFontSize:40,
-          scaleLabel  :{
-            fontSize:40,
-          }
-        }
-      },
     });
   }
 
@@ -237,10 +216,13 @@ const generateSignature = (accessToken) => {
         let infoWrap = document.getElementsByClassName('info-wrap');
         for (let i = 0; i < infoWrap.length; i++) { infoWrap[i].classList.add('fadeIn');}
       }, false);
+
+
   }
 
 
+
+
+
   getUserLibrary();
-
-
 }

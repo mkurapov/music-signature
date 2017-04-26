@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 var port = process.env.PORT || 8080;
-var redirect_uri = port === 8080? 'http://192.168.1.74:8080/result' : 'https://music-signature.herokuapp.com/result';
+var redirect_uri = port === 8080? 'http://192.168.1.68:8080/result' : 'https://music-signature.herokuapp.com/result';
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var stateKey = 'spotify_auth_state';
